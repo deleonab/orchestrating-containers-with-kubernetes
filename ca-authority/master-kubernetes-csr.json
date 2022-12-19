@@ -1,0 +1,34 @@
+{
+  "CN": "kubernetes",
+   "hosts": [
+   "127.0.0.1",
+   "172.31.0.10",
+   "172.31.0.11",
+   "172.31.0.12",
+   "ip-172-31-0-10",
+   "ip-172-31-0-11",
+   "ip-172-31-0-12",
+   "ip-172-31-0-10..compute.internal",
+   "ip-172-31-0-11..compute.internal",
+   "ip-172-31-0-12..compute.internal",
+   "",
+   "kubernetes",
+   "kubernetes.default",
+   "kubernetes.default.svc",
+   "kubernetes.default.svc.cluster",
+   "kubernetes.default.svc.cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "UK",
+      "L": "England",
+      "O": "Kubernetes",
+      "OU": "DAREY.IO DEVOPS",
+      "ST": "London"
+    }
+  ]
+}
