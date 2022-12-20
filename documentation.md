@@ -860,13 +860,25 @@ EOF
 ```
 
 ##### Send the encryption file to the Controller nodes using scp and a for loop
+
+##### SSH into the controller server. We must be in ssh folder so that we can reach the private key
+##### Master-0 master-1 master-2
 ```
-for i in 0 1 2; do
-instance="${NAME}-master-${i}" \
-  external_ip=$(aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=${instance}" \
-    --output text --query 'Reservations[].Instances[].PublicIpAddress')
-  scp -i ../ssh/${NAME}.id_rsa \
-    encryption-config.yaml ubuntu@${external_ip}:~/;
-done
+master_1_ip=$(aws ec2 describe-instances \
+--filters "Name=tag:Name,Values=${NAME}-master-0" \
+--output text --query 'Reservations[].Instances[].PublicIpAddress')
+ssh -i k8s-cluster-from-ground-up.id_rsa ubuntu@${master_1_ip}
+```
+```
+master_2_ip=$(aws ec2 describe-instances \
+--filters "Name=tag:Name,Values=${NAME}-master-1" \
+--output text --query 'Reservations[].Instances[].PublicIpAddress')
+ssh -i k8s-cluster-from-ground-up.id_rsa ubuntu@${master_2_ip}
+
+```
+```
+master_3_ip=$(aws ec2 describe-instances \
+--filters "Name=tag:Name,Values=${NAME}-master-2" \
+--output text --query 'Reservations[].Instances[].PublicIpAddress')
+ssh -i k8s-cluster-from-ground-up.id_rsa ubuntu@${master_3_ip}
 ```
