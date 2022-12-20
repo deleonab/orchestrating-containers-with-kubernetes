@@ -858,3 +858,15 @@ resources:
       - identity: {}
 EOF
 ```
+
+##### Send the encryption file to the Controller nodes using scp and a for loop
+```
+for i in 0 1 2; do
+instance="${NAME}-master-${i}" \
+  external_ip=$(aws ec2 describe-instances \
+    --filters "Name=tag:Name,Values=${instance}" \
+    --output text --query 'Reservations[].Instances[].PublicIpAddress')
+  scp -i ../ssh/${NAME}.id_rsa \
+    encryption-config.yaml ubuntu@${external_ip}:~/;
+done
+```
