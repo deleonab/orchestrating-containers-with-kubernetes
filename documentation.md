@@ -1466,6 +1466,54 @@ sudo systemctl status kube-controller-manager
 sudo systemctl status kube-scheduler
 }
 ```
+```
+kubectl cluster-info  --kubeconfig admin.kubeconfig
+```
+##### OUTPUT:
+```
+Kubernetes control plane is running at https://k8s-api-server.svc.darey.io:6443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+I will check the current namespaces:
+```
+kubectl get namespaces --kubeconfig admin.kubeconfig
+```
+##### OUTPUT:
+```
+NAME              STATUS   AGE
+default           Active   22m
+kube-node-lease   Active   22m
+kube-public       Active   22m
+kube-system       Active   22m
+To reach the Kubernetes API Server publicly
+curl --cacert /var/lib/kubernetes/ca.pem https://$INTERNAL_IP:6443/version
+```
+##### OUTPUT:
+```
+{
+  "major": "1",
+  "minor": "21",
+  "gitVersion": "v1.21.0",
+  "gitCommit": "cb303e613a121a29364f75cc67d3d580833a7479",
+  "gitTreeState": "clean",
+  "buildDate": "2021-04-08T16:25:06Z",
+  "goVersion": "go1.16.1",
+  "compiler": "gc",
+  "platform": "linux/amd64"
+}
+```
+##### To get the status of each component:
+```
+kubectl get componentstatuses --kubeconfig admin.kubeconfig
+```
+
+
+
+
+
+
+
 
 
 
