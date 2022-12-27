@@ -1061,7 +1061,23 @@ EOF
 ```
 
 ##### Send the encryption file to the Controller nodes using scp and a for loop
-
+```
+for i in 0 1 2; do
+instance="${NAME}-master-${i}" \
+  external_ip=$(aws ec2 describe-instances \
+    --filters "Name=tag:Name,Values=${instance}" \
+    --output text --query 'Reservations[].Instances[].PublicIpAddress')
+  scp -i ../ssh/${NAME}.id_rsa \
+  encryption-config.yaml ubuntu@${external_ip}:~/; \
+done
+```
+##### Output was
+```
+> done
+encryption-config.yaml                                                                                                                                               100%  240     1.0KB/s   00:00    
+encryption-config.yaml                                                                                                                                               100%  240     0.3KB/s   00:00    
+encryption-config.yaml                                                                                                                                               100%  240     1.5KB/s   00:00 
+```
 ##### SSH into the controller server. We must be in ssh folder so that we can reach the private key
 ##### Master-0 master-1 master-2
 ```
@@ -1157,3 +1173,69 @@ Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: ed33b44c0b153ee3 initialized peer con
 Dec 27 00:50:45 ip-172-31-0-12 etcd[2879]: updated the cluster version from 3.0 to 3.4
 Dec 27 00:50:45 ip-172-31-0-12 etcd[2879]: enabled capabilities for version 3.4
 ```
+
+##### Next thing was to configure the components for the control plane on the master/controller nodes
+
+
+##### Create the Kubernetes configuration directory:
+
+```
+sudo mkdir -p /etc/kubernetes/config
+```
+Download the release binaries
+```
+wget -q --show-progress --https-only --timestamping \
+"https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-apiserver" \
+"https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-controller-manager" \
+"https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-scheduler" \
+"https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
+```
+
+##### output
+```
+ubuntu@ip-172-31-0-10:~$ wget -q --show-progress --https-only --timestamping \
+> "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-apiserver" \
+> "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-controller-manager" \
+> "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-scheduler" \
+> "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
+kube-apiserver                                    100%[============================================================================================================>] 116.41M  48.0MB/s    in 2.4s     
+kube-controller-manager                           100%[============================================================================================================>] 110.89M  44.2MB/s    in 2.5s     
+kube-scheduler                                    100%[============================================================================================================>]  44.92M  46.6MB/s    in 1.0s     
+kubectl                                           100%[============================================================================================================>]  44.29M  62.5MB/s    in 0.7
+
+```
+##### Next step is to install the downloaded binaries
+
+```
+{
+chmod +x kube-apiserver kube-controller-manager kube-scheduler kubectl
+sudo mv kube-apiserver kube-controller-manager kube-scheduler kubectl /usr/local/bin/
+}
+```
+
+##### Next is to configure the API Server
+```
+{
+sudo mkdir -p /var/lib/kubernetes/
+
+sudo mv ca.pem ca-key.pem master-kubernetes-key.pem master-kubernetes.pem \
+service-account-key.pem service-account.pem \
+encryption-config.yaml /var/lib/kubernetes/
+}
+```
+##### I will use the instance internal IP address to advertise the API Server to members of the cluster. 
+```
+export INTERNAL_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+```
+###### Output for master node 1
+```
+ubuntu@ip-172-31-0-10:~$ echo $INTERNAL_IP
+172.31.0.10
+```
+
+
+
+
+
+
+
