@@ -334,8 +334,19 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 }
 ```
-##### The file defines the following:
+```
+2022/12/26 19:56:58 [INFO] generating a new CA key and certificate from CSR
+2022/12/26 19:56:58 [INFO] generate received request
+2022/12/26 19:56:58 [INFO] received CSR
+2022/12/26 19:56:58 [INFO] generating key: rsa-2048
+2022/12/26 19:56:58 [INFO] encoded CSR
+2022/12/26 19:56:58 [INFO] signed certificate with serial number 645323685689437359180652844255719425720419992167
+```
 
+
+
+##### The file defines the following:
+```
 CN – Common name for the authority
 
 algo – the algorithm used for the certificates
@@ -360,6 +371,7 @@ Output:
 2021/05/16 20:18:44 [INFO] encoded CSR
 2021/05/16 20:18:44 [INFO] signed certificate with serial number 478642753175858256977534824638605235819766817855
 List the directory to see the created files
+```
 ```
 ls -ltr
 
@@ -428,7 +440,13 @@ cfssl gencert \
 
 
 ```
-
+```
+2022/12/26 20:03:01 [INFO] generate received request
+2022/12/26 20:03:01 [INFO] received CSR
+2022/12/26 20:03:01 [INFO] generating key: rsa-2048
+2022/12/26 20:03:02 [INFO] encoded CSR
+2022/12/26 20:03:02 [INFO] signed certificate with serial number 158785961958646298790666911215729371451573615371
+```
 ##### kube-scheduler Client Certificate and Private Key
 ```
 {
@@ -462,7 +480,18 @@ cfssl gencert \
 }
 
 ```
+```
+2022/12/26 20:04:54 [INFO] generate received request
+2022/12/26 20:04:54 [INFO] received CSR
+2022/12/26 20:04:54 [INFO] generating key: rsa-2048
+2022/12/26 20:04:54 [INFO] encoded CSR
+2022/12/26 20:04:54 [INFO] signed certificate with serial number 414209491116218536580152337309784018035836152817
+2022/12/26 20:04:54 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for
+websites. For more information see the Baseline Requirements for the Issuance and Management
+of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
+specifically, section 10.2.3 ("Information Requirements").
 
+```
 ##### kube-proxy Client Certificate and Private Key
 ```
 {
@@ -495,6 +524,18 @@ cfssl gencert \
 
 }
 ```
+
+```
+2022/12/26 20:07:51 [INFO] generate received request
+2022/12/26 20:07:51 [INFO] received CSR
+2022/12/26 20:07:51 [INFO] generating key: rsa-2048
+2022/12/26 20:07:51 [INFO] encoded CSR
+2022/12/26 20:07:51 [INFO] signed certificate with serial number 728179748060419021411780314933845375586198996264
+2022/12/26 20:07:51 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for
+websites. For more information see the Baseline Requirements for the Issuance and Management
+of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
+specifically, section 10.2.3 ("Information Requirements").
+```
 ##### kube-controller-manager Client Certificate and Private Key
 ```
 {
@@ -526,10 +567,20 @@ cfssl gencert \
 
 }
 ```
-##### kubelet Client Certificate and Private Key
-Similar to how you configured the api-server's certificate, Kubernetes requires that the hostname of each worker node is included in the client certificate.
 
-Also, Kubernetes uses a special-purpose authorization mode called Node Authorizer, that specifically authorizes API requests made by kubelet services. In order to be authorized by the Node Authorizer, kubelets must use a credential that identifies them as being in the system:nodes group, with a username of system:node:<nodeName>. Notice the "CN": "system:node:${instance_hostname}", in the below code.
+```
+2022/12/26 20:09:00 [INFO] generate received request
+2022/12/26 20:09:00 [INFO] received CSR
+2022/12/26 20:09:00 [INFO] generating key: rsa-2048
+2022/12/26 20:09:01 [INFO] encoded CSR
+2022/12/26 20:09:01 [INFO] signed certificate with serial number 237341597231731651577204030023913031072235128484
+2022/12/26 20:09:01 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for
+websites. For more information see the Baseline Requirements for the Issuance and Management
+of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
+specifically, section 10.2.3 ("Information Requirements").
+```
+##### kubelet Client Certificate and Private Key
+
 
 ```
 for i in 0 1 2; do
@@ -571,6 +622,24 @@ EOF
     ${NAME}-worker-${i}-csr.json | cfssljson -bare ${NAME}-worker-${i}
 done
 ```
+```
+2022/12/26 20:11:26 [INFO] generate received request
+2022/12/26 20:11:26 [INFO] received CSR
+2022/12/26 20:11:26 [INFO] generating key: rsa-2048
+2022/12/26 20:11:26 [INFO] encoded CSR
+2022/12/26 20:11:26 [INFO] signed certificate with serial number 229962559559390919398290569377897453561046778168
+2022/12/26 20:11:29 [INFO] generate received request
+2022/12/26 20:11:29 [INFO] received CSR
+2022/12/26 20:11:29 [INFO] generating key: rsa-2048
+2022/12/26 20:11:29 [INFO] encoded CSR
+2022/12/26 20:11:29 [INFO] signed certificate with serial number 177471336144391966294230044313346966724298116261
+2022/12/26 20:11:32 [INFO] generate received request
+2022/12/26 20:11:32 [INFO] received CSR
+2022/12/26 20:11:32 [INFO] generating key: rsa-2048
+2022/12/26 20:11:32 [INFO] encoded CSR
+2022/12/26 20:11:32 [INFO] signed certificate with serial number 456393035792099918390845230021895018014510537782
+
+```
 ##### kubernetes admin user's Client Certificate and Private Key
 ```
 {
@@ -601,8 +670,19 @@ cfssl gencert \
   admin-csr.json | cfssljson -bare admin
 }
 ```
+```
+2022/12/26 20:13:42 [INFO] generate received request
+2022/12/26 20:13:42 [INFO] received CSR
+2022/12/26 20:13:42 [INFO] generating key: rsa-2048
+2022/12/26 20:13:43 [INFO] encoded CSR
+2022/12/26 20:13:43 [INFO] signed certificate with serial number 713695575502621307308091238998277690213306449948
+2022/12/26 20:13:43 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for
+websites. For more information see the Baseline Requirements for the Issuance and Management
+of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
+specifically, section 10.2.3 ("Information Requirements").
 
-##### There is one more pair of certificate and private key we need to generate. That is for the Token Controller: a part of the Kubernetes Controller Manager kube-controller-manager responsible for generating and signing service account tokens which are used by pods or other resources to establish connectivity to the api-server. Read more about Service Accounts from the official documentation.
+```
+##### Generate certificate and private key for the Token Controller: a part of the Kubernetes Controller Manager kube-controller-manager responsible for generating and signing service account tokens which are used by pods or other resources to establish connectivity to the api-server. 
 
 ```
 
@@ -635,11 +715,23 @@ cfssl gencert \
   service-account-csr.json | cfssljson -bare service-account
 }
 ```
-##### Copy these files securely to the worker nodes using scp utility
+
 ```
-Root CA certificate – ca.pem
-X509 Certificate for each worker node
-Private Key of the certificate for each worker node
+2022/12/26 20:16:24 [INFO] generate received request
+2022/12/26 20:16:24 [INFO] received CSR
+2022/12/26 20:16:24 [INFO] generating key: rsa-2048
+2022/12/26 20:16:24 [INFO] encoded CSR
+2022/12/26 20:16:24 [INFO] signed certificate with serial number 188384477872214889488942556768121661620534811207
+2022/12/26 20:16:24 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for
+websites. For more information see the Baseline Requirements for the Issuance and Management
+of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
+specifically, section 10.2.3 ("Information Requirements").
+```
+##### The next thing is to distribute these certificates securely to the nodes using scp utility
+##### First the worker nodes
+
+##### Send to each of the nodes with a loop
+```
 for i in 0 1 2; do
   instance="${NAME}-worker-${i}"
   external_ip=$(aws ec2 describe-instances \
@@ -649,7 +741,28 @@ for i in 0 1 2; do
     ca.pem ${instance}-key.pem ${instance}.pem ubuntu@${external_ip}:~/; \
 done
 ```
+```
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '54.202.17.20' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     7.7KB/s   00:00     
+k8s-cluster-from-ground-up-worker-0-key.pem                                                                                                                                  100% 1679     9.5KB/s   00:00     
+k8s-cluster-from-ground-up-worker-0.pem                                                                                                                                      100% 1513     9.3KB/s   00:00     
+The authenticity of host '54.190.27.171 (54.190.27.171)' can't be established.
+ECDSA key fingerprint is SHA256:g/y4nJ3Int9SQqpPT5mZDcGU3XcYKvlFYk8TxCCvRhI.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '54.190.27.171' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     8.1KB/s   00:00     
+k8s-cluster-from-ground-up-worker-1-key.pem                                                                                                                                  100% 1675    10.0KB/s   00:00     
+k8s-cluster-from-ground-up-worker-1.pem                                                                                                                                      100% 1513     9.1KB/s   00:00     
+The authenticity of host '34.220.174.72 (34.220.174.72)' can't be established.
+ECDSA key fingerprint is SHA256:fXrI0dI+5mRfg8KDooEtkpiNmoWxyaA0LpFhe9nep84.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '34.220.174.72' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     8.4KB/s   00:00     
+k8s-cluster-from-ground-up-worker-2-key.pem                                                                                                                                  100% 1675     9.4KB/s   00:00     
+k8s-cluster-from-ground-up-worker-2.pem    
 
+```
 ##### Master or Controller node: – Note that only the api-server related files will be sent over to the master nodes.
 ```
 for i in 0 1 2; do
@@ -662,15 +775,48 @@ instance="${NAME}-master-${i}" \
     master-kubernetes.pem master-kubernetes-key.pem ubuntu@${external_ip}:~/;
 done
 ```
+```
+The authenticity of host '35.88.152.252 (35.88.152.252)' can't be established.
+ECDSA key fingerprint is SHA256:ndPwmbc0/ryJ4hlEUZyM3JGeMJOvFhw0fh4cwc1NwTw.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '35.88.152.252' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     7.9KB/s   00:00    
+ca-key.pem                                                                                                                                                                   100% 1679     9.5KB/s   00:00    
+service-account-key.pem                                                                                                                                                      100% 1675    10.1KB/s   00:00    
+service-account.pem                                                                                                                                                          100% 1440     8.4KB/s   00:00    
+master-kubernetes.pem                                                                                                                                                        100% 2004    11.5KB/s   00:00    
+master-kubernetes-key.pem                                                                                                                                                    100% 1679     9.3KB/s   00:00    
+The authenticity of host '52.12.92.199 (52.12.92.199)' can't be established.
+ECDSA key fingerprint is SHA256:9UvC3K8b7ZayzD2OggrreWr+Qp1f8L7rGm6yaQLYILE.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '52.12.92.199' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     7.6KB/s   00:00    
+ca-key.pem                                                                                                                                                                   100% 1679    10.5KB/s   00:00    
+service-account-key.pem                                                                                                                                                      100% 1675    10.3KB/s   00:00    
+service-account.pem                                                                                                                                                          100% 1440     9.2KB/s   00:00    
+master-kubernetes.pem                                                                                                                                                        100% 2004    12.3KB/s   00:00    
+master-kubernetes-key.pem                                                                                                                                                    100% 1679    10.6KB/s   00:00    
+The authenticity of host '54.203.150.82 (54.203.150.82)' can't be established.
+ECDSA key fingerprint is SHA256:VVQjhmbP/U6yng0WvB/Qgy+IMyBktW9Cdhndi3XTaa4.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '54.203.150.82' (ECDSA) to the list of known hosts.
+ca.pem                                                                                                                                                                       100% 1350     8.0KB/s   00:00    
+ca-key.pem                                                                                                                                                                   100% 1679    10.0KB/s   00:00    
+service-account-key.pem                                                                                                                                                      100% 1675    10.4KB/s   00:00    
+service-account.pem                                                                                                                                                          100% 1440     9.0KB/s   00:00    
+master-kubernetes.pem                                                                                                                                                        100% 2004    12.4KB/s   00:00    
+master-kubernetes-key.pem   
 
-##### Generate the kubelet kubeconfig file
+```
+##### Generate the kubelet kubeconfig file - I will distribute them later
 ```
 for i in 0 1 2; do
 
 instance="${NAME}-worker-${i}"
 instance_hostname="ip-172-31-0-2${i}"
-
+```
  # Set the kubernetes cluster in the kubeconfig file
+ ```
   kubectl config set-cluster ${NAME} \
     --certificate-authority=ca.pem \
     --embed-certs=true \
@@ -678,6 +824,7 @@ instance_hostname="ip-172-31-0-2${i}"
     --kubeconfig=${instance}.kubeconfig
 
 # Set the cluster credentials in the kubeconfig file
+
   kubectl config set-credentials system:node:${instance_hostname} \
     --client-certificate=${instance}.pem \
     --client-key=${instance}-key.pem \
@@ -685,6 +832,7 @@ instance_hostname="ip-172-31-0-2${i}"
     --kubeconfig=${instance}.kubeconfig
 
 # Set the context in the kubeconfig file
+
   kubectl config set-context default \
     --cluster=${NAME} \
     --user=system:node:${instance_hostname} \
@@ -693,7 +841,21 @@ instance_hostname="ip-172-31-0-2${i}"
   kubectl config use-context default --kubeconfig=${instance}.kubeconfig
 done
 ```
+```
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:node:ip-172-31-0-20" set.
+Context "default" created.
+Switched to context "default".
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:node:ip-172-31-0-21" set.
+Context "default" created.
+Switched to context "default".
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:node:ip-172-31-0-22" set.
+Context "default" created.
+Switched to context "default".
 
+```
 ##### Generate the kube-proxy kubeconfig
 ```
 {
@@ -718,7 +880,13 @@ done
 }
 
 ```
+```
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:kube-proxy" set.
+Context "default" created.
+Switched to context "default".
 
+```
 ##### Generate the Kube-Controller-Manager kubeconfig
 Notice that the --server is set to use 127.0.0.1. This is because, this component runs on the API-Server so there is no point routing through the Load Balancer.
 ```
@@ -743,7 +911,14 @@ Notice that the --server is set to use 127.0.0.1. This is because, this componen
   kubectl config use-context default --kubeconfig=kube-controller-manager.kubeconfig
 }
 ```
+```
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:kube-controller-manager" set.
+Context "default" created.
+Switched to context "default".
 
+
+```
 ##### Generating the Kube-Scheduler Kubeconfig
 ```
 {
@@ -766,6 +941,13 @@ Notice that the --server is set to use 127.0.0.1. This is because, this componen
 
   kubectl config use-context default --kubeconfig=kube-scheduler.kubeconfig
 }
+```
+```
+Cluster "k8s-cluster-from-ground-up" set.
+User "system:kube-scheduler" set.
+Context "default" created.
+Switched to context "default".
+
 ```
 ##### Finally, generate the kubeconfig file for the admin user
 ```
@@ -790,7 +972,14 @@ Notice that the --server is set to use 127.0.0.1. This is because, this componen
   kubectl config use-context default --kubeconfig=admin.kubeconfig
 }
 ```
+```
 
+Cluster "k8s-cluster-from-ground-up" set.
+User "admin" set.
+Context "default" created.
+Switched to context "default".
+
+```
 ##### NEXT, WE NEED TO DISTRIBUTE THE FILES TO THEIR RESPECTIVE SERVERS
 ##### send kubeproxy and worker-o kubeconfigs to the instance 0
 ```
@@ -803,7 +992,7 @@ for i in 0 ; do
   kube-proxy.kubeconfig  k8s-cluster-from-ground-up-worker-0.kubeconfig ubuntu@${external_ip}:~/; \
 done
 ```
-##### send kubeproxy and worker-1a kubeconfigs to the instance 1
+##### send kubeproxy and worker-i kubeconfigs to the worker nodes
 ```
 for i in 1 ; do
   instance="${NAME}-worker-${i}"
@@ -811,10 +1000,10 @@ for i in 1 ; do
     --filters "Name=tag:Name,Values=${instance}" \
     --output text --query 'Reservations[].Instances[].PublicIpAddress')
   scp -i ../ssh/${NAME}.id_rsa \
-  kube-proxy.kubeconfig  k8s-cluster-from-ground-up-worker-${i}.kubeconfig ubuntu@${external_ip}:~/; \
+  kube-proxy.kubeconfig  ${NAME}-worker-${i}.kubeconfig ubuntu@${external_ip}:~/; \
 done
 ```
-##### send kubeproxy and worker-1a kubeconfigs to the instance 2
+##### send kubeproxy and worker-2 kubeconfigs to the instance 2
 ```
 for i in 2 ; do
   instance="${NAME}-worker-${i}"
@@ -822,11 +1011,11 @@ for i in 2 ; do
     --filters "Name=tag:Name,Values=${instance}" \
     --output text --query 'Reservations[].Instances[].PublicIpAddress')
   scp -i ../ssh/${NAME}.id_rsa \
-  kube-proxy.kubeconfig  k8s-cluster-from-ground-up-worker-${i}.kubeconfig ubuntu@${external_ip}:~/; \
+  kube-proxy.kubeconfig  ${NAME}-worker-${i}.kubeconfig ubuntu@${external_ip}:~/; \
 done
 ```
 
-##### send kkube-controller-manager.kubeconfig kube-scheduler.kubeconfig admin.kubeconfig  to 3 master nodes
+##### send kube-controller-manager.kubeconfig kube-scheduler.kubeconfig admin.kubeconfig  to 3 master nodes
 ```
 for i in 0 1 2; do
 instance="${NAME}-master-${i}" \
@@ -834,8 +1023,20 @@ instance="${NAME}-master-${i}" \
     --filters "Name=tag:Name,Values=${instance}" \
     --output text --query 'Reservations[].Instances[].PublicIpAddress')
   scp -i ../ssh/${NAME}.id_rsa \
-   kube-controller-manager.kubeconfig kube-scheduler.kubeconfig admin.kubeconfig  ubuntu@${external_ip}:~/;
+  admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig ubuntu@${external_ip}:~/; \
 done
+```
+```
+admin.kubeconfig                                                                                                                                                                                    100% 6381    36.2KB/s   00:00     
+kube-controller-manager.kubeconfig                                                                                                                                                                  100% 6441    37.8KB/s   00:00     
+kube-scheduler.kubeconfig                                                                                                                                                                           100% 6387    40.0KB/s   00:00     
+admin.kubeconfig                                                                                                                                                                                    100% 6381    40.0KB/s   00:00     
+kube-controller-manager.kubeconfig                                                                                                                                                                  100% 6441    33.6KB/s   00:00     
+kube-scheduler.kubeconfig                                                                                                                                                                           100% 6387    38.0KB/s   00:00     
+admin.kubeconfig                                                                                                                                                                                    100% 6381    24.2KB/s   00:00     
+kube-controller-manager.kubeconfig                                                                                                                                                                  100% 6441    34.9KB/s   00:00     
+kube-scheduler.kubeconfig                                                                                                                                                                           100% 6387    30.2KB/s   00:00 
+
 ```
 ##### generate ETCD encryption key
 ```
@@ -883,3 +1084,76 @@ master_3_ip=$(aws ec2 describe-instances \
 ssh -i k8s-cluster-from-ground-up.id_rsa ubuntu@${master_3_ip}
 ```
 systemctl status etcd.service
+
+##### Master Node 1
+```
+etcd.service - etcd
+   Loaded: loaded (/etc/systemd/system/etcd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2022-12-27 01:02:20 UTC; 13s ago
+     Docs: https://github.com/coreos
+ Main PID: 2783 (etcd)
+    Tasks: 7
+   Memory: 9.2M
+      CPU: 248ms
+   CGroup: /system.slice/etcd.service
+           └─2783 /usr/local/bin/etcd --name master-0 --trusted-ca-file=/etc/etcd/ca.pem --peer-trusted-ca-file=/etc/etcd/ca.pem --peer-client-cert-auth --client-cert-auth --listen-peer-urls https:
+
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: established a TCP streaming connection with peer ade74a4f39c39f33 (stream Message writer)
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: established a TCP streaming connection with peer ade74a4f39c39f33 (stream MsgApp v2 writer)
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: established a TCP streaming connection with peer ed33b44c0b153ee3 (stream MsgApp v2 writer)
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: established a TCP streaming connection with peer ed33b44c0b153ee3 (stream Message writer)
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: published {Name:master-0 ClientURLs:[https://172.31.0.10:2379]} to cluster 503bbccb5bc2d96d
+Dec 27 01:02:20 ip-172-31-0-10 systemd[1]: Started etcd.
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: ready to serve client requests
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: serving client requests on 127.0.0.1:2379
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: ready to serve client requests
+Dec 27 01:02:20 ip-172-31-0-10 etcd[2783]: serving client requests on 172.31.0.10:2379
+```
+##### Master Node 2
+```
+etcd.service - etcd
+   Loaded: loaded (/etc/systemd/system/etcd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2022-12-27 01:00:21 UTC; 50s ago
+     Docs: https://github.com/coreos
+ Main PID: 2727 (etcd)
+    Tasks: 7
+   Memory: 15.5M
+      CPU: 615ms
+   CGroup: /system.slice/etcd.service
+           └─2727 /usr/local/bin/etcd --name master-1 --trusted-ca-file=/etc/etcd/ca.pem --peer-trusted-ca-file=/etc/etcd/ca.pem --peer-client-cert-auth --client-cert-auth --listen-peer-urls https:
+
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: established a TCP streaming connection with peer 6709c481b5234095 (stream MsgApp v2 writer)
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: established a TCP streaming connection with peer 6709c481b5234095 (stream Message writer)
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: established a TCP streaming connection with peer ed33b44c0b153ee3 (stream Message writer)
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: published {Name:master-1 ClientURLs:[https://172.31.0.11:2379]} to cluster 503bbccb5bc2d96d
+Dec 27 01:00:21 ip-172-31-0-11 systemd[1]: Started etcd.
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: ready to serve client requests
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: serving client requests on 127.0.0.1:2379
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: ready to serve client requests
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: serving client requests on 172.31.0.11:2379
+Dec 27 01:00:21 ip-172-31-0-11 etcd[2727]: established a TCP streaming connection with peer ed33b44c0b153ee3 (stream MsgApp v2 writer)
+```
+##### Master Node 3
+```
+● etcd.service - etcd
+   Loaded: loaded (/etc/systemd/system/etcd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2022-12-27 00:50:42 UTC; 3min 6s ago
+     Docs: https://github.com/coreos
+ Main PID: 2879 (etcd)
+    Tasks: 8
+   Memory: 21.1M
+      CPU: 2.059s
+   CGroup: /system.slice/etcd.service
+           └─2879 /usr/local/bin/etcd --name master-2 --trusted-ca-file=/etc/etcd/ca.pem --peer-trusted-ca-file=/etc/etcd/ca.pem --peer-client-cert-auth --client-cert-auth --listen-peer-urls https:
+
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: established a TCP streaming connection with peer ade74a4f39c39f33 (stream MsgApp v2 writer)
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: published {Name:master-2 ClientURLs:[https://172.31.0.12:2379]} to cluster 503bbccb5bc2d96d
+Dec 27 00:50:42 ip-172-31-0-12 systemd[1]: Started etcd.
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: ready to serve client requests
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: serving client requests on 127.0.0.1:2379
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: ready to serve client requests
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: serving client requests on 172.31.0.12:2379
+Dec 27 00:50:42 ip-172-31-0-12 etcd[2879]: ed33b44c0b153ee3 initialized peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
+Dec 27 00:50:45 ip-172-31-0-12 etcd[2879]: updated the cluster version from 3.0 to 3.4
+Dec 27 00:50:45 ip-172-31-0-12 etcd[2879]: enabled capabilities for version 3.4
+```
