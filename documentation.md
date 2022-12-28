@@ -1724,17 +1724,9 @@ echo "${POD_CIDR}"
 ```
 
 
-Notice, that both containers share a single virtual network interface veth0 that belongs to a virtual network within a single node. This virtual interface veth0 is used to allow communication from a pod to the outer world through a bridge cbr0 (custom bridge). This bridge is an interface that forwards the traffic from the Pods on one node to other nodes through a physical network interface eth0. Routing between the nodes is done by means of a router with the routing table.
-
-For more detailed explanation of different aspects of Kubernetes networking – watch this video.
-
-Pod Network
-
-You must decide on the Pod CIDR per worker node. Each worker node will run multiple pods, and each pod will have its own IP address. IP address of a particular Pod on worker node 1 should be able to communicate with the IP address of another particular Pod on worker node 2. For this to become possible, there must be a bridge network with virtual network interfaces that connects them all together. Here is an interesting read that goes a little deeper into how it works Bookmark that page and read it over and over again after you have completed this project
-
-Configure the bridge and loopback networks
-Bridge:
-
+##### Configure the bridge and loopback networks##
+##### Bridge:
+```
 cat > 172-20-bridge.conf <<EOF
 {
     "cniVersion": "0.3.1",
@@ -1752,6 +1744,8 @@ cat > 172-20-bridge.conf <<EOF
     }
 }
 EOF
+```
+```
 Loopback:
 
 cat > 99-loopback.conf <<EOF
@@ -1760,21 +1754,28 @@ cat > 99-loopback.conf <<EOF
     "type": "loopback"
 }
 EOF
-Move the files to the network configuration directory:
+```
+
+##### Let's move the files to the network configuration directory:
+```
 sudo mv 172-20-bridge.conf 99-loopback.conf /etc/cni/net.d/
-Store the worker’s name in a variable:
+```
+##### Store the worker’s name in a variable:
+```
 NAME=k8s-cluster-from-ground-up
 WORKER_NAME=${NAME}-$(curl -s http://169.254.169.254/latest/user-data/ \
   | tr "|" "\n" | grep "^name" | cut -d"=" -f2)
 echo "${WORKER_NAME}"
-Move the certificates and kubeconfig file to their respective configuration directories:
+```
+##### Move the certificates and kubeconfig file to their respective configuration directories:
+```
 sudo mv ${WORKER_NAME}-key.pem ${WORKER_NAME}.pem /var/lib/kubelet/
 sudo mv ${WORKER_NAME}.kubeconfig /var/lib/kubelet/kubeconfig
 sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
 sudo mv ca.pem /var/lib/kubernetes/
-Create the kubelet-config.yaml file
-Ensure the needed variables exist:
-
+```
+##### Create the kubelet-config.yaml file and ensure the needed variables exist:
+```
 NAME=k8s-cluster-from-ground-up
 WORKER_NAME=${NAME}-$(curl -s http://169.254.169.254/latest/user-data/ \
   | tr "|" "\n" | grep "^name" | cut -d"=" -f2)
@@ -1799,9 +1800,10 @@ runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/lib/kubelet/${WORKER_NAME}.pem"
 tlsPrivateKeyFile: "/var/lib/kubelet/${WORKER_NAME}-key.pem"
 EOF
+```
 
-
-Configure the kubelet systemd service
+##### Configure the kubelet systemd service
+```
 cat <<EOF | sudo tee /etc/systemd/system/kubelet.service
 [Unit]
 Description=Kubernetes Kubelet
@@ -1824,7 +1826,10 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-Create the kube-proxy.yaml file
+```
+
+##### Create the kube-proxy.yaml file
+```
 cat <<EOF | sudo tee /var/lib/kube-proxy/kube-proxy-config.yaml
 kind: KubeProxyConfiguration
 apiVersion: kubeproxy.config.k8s.io/v1alpha1
@@ -1846,7 +1851,8 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-Reload configurations and start both services
+```
+##### Reload configurations and start both services
 {
   sudo systemctl daemon-reload
   sudo systemctl enable containerd kubelet kube-proxy
