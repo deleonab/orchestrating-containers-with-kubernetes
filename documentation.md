@@ -21,6 +21,7 @@ aws ec2 create-tags \
   --tags Key=Name,Value=${NAME}
 
 ```
+![workersrunning](./images/vpc.png)
 
 ##### Enable DNS Support and host name
 ```
@@ -76,7 +77,7 @@ aws ec2 create-tags \
   --tags Key=Name,Value=${NAME}
 
 ```
-
+![workersrunning](./images/subnet.png)
 ##### Create the Internet Gateway, tag it and attach it to the VPC:
 ```
 INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway \
@@ -92,6 +93,9 @@ aws ec2 attach-internet-gateway \
   --internet-gateway-id ${INTERNET_GATEWAY_ID} \
   --vpc-id ${VPC_ID}
 ```
+
+![workersrunning](./images/internet-gateway.png)
+
 ##### Create route tables, associate the route table to subnet, and create a route to allow external traffic to the Internet through the Internet Gateway
 ```
 ROUTE_TABLE_ID=$(aws ec2 create-route-table \
@@ -113,6 +117,7 @@ aws ec2 create-route \
   --destination-cidr-block 0.0.0.0/0 \
   --gateway-id ${INTERNET_GATEWAY_ID}
   ```
+![workersrunning](./images/route-table.png)
 
 ##### Configure security groups
 ##### Create the security group and store its ID in a variable
@@ -160,6 +165,8 @@ aws ec2 authorize-security-group-ingress \
   --cidr 0.0.0.0/0
   ```
 
+![workersrunning](./images/security-groups.png)
+
 ##### Create a network Load balancer,
 ```
 LOAD_BALANCER_ARN=$(aws elbv2 create-load-balancer \
@@ -169,6 +176,9 @@ LOAD_BALANCER_ARN=$(aws elbv2 create-load-balancer \
 --type network \
 --output text --query 'LoadBalancers[].LoadBalancerArn')
 ```
+
+![workersrunning](./images/load-balancer.png)
+
 ##### Create Target group
 ```
 TARGET_GROUP_ARN=$(aws elbv2 create-target-group \
@@ -1707,7 +1717,7 @@ Install the downloaded binaries
   sudo mv  kubectl kube-proxy kubelet /usr/local/bin/
 }
 ```
-
+![download kubelet](./images/downloadkubelet.png)
 
 ##### Configure the worker nodes components
 
@@ -1858,7 +1868,14 @@ EOF
   sudo systemctl enable containerd kubelet kube-proxy
   sudo systemctl start containerd kubelet kube-proxy
 }
-Now you should have the worker nodes joined to the cluster, and in a READY state.
+![startkubelet](./images/startkubelet.png)
+
+##### Worker nodes are now running
+
+![workersrunning](./images/workernodesrunning.png)
+
+
+
 
 
 
