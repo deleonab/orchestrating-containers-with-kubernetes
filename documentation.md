@@ -1874,6 +1874,8 @@ EOF
 
 ![workersrunning](./images/workernodesrunning.png)
 
+###### Workers now running
+
 
 
 
